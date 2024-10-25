@@ -21,8 +21,10 @@ class PriceScraper:
         """
         self.product_url = product_url
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.9',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',   
+
+            'Accept-Language': 'en-US,en;q=0.9',   
+
         }
 
     def fetch_current_price(self) -> Optional[float]:
@@ -36,17 +38,15 @@ class PriceScraper:
             response = requests.get(self.product_url, headers=self.headers)
             soup = BeautifulSoup(response.content, 'html.parser')
 
-            # Extract price components
-            price_whole_part = soup.find('span', class_='a-price-whole')
-            price_fraction_part = soup.find('span', class_='a-price-fraction')
-
-            if price_whole_part and price_fraction_part:
-                price_whole = price_whole_part.text.strip().replace(',', '')
-                price_fraction = price_fraction_part.text.strip()
-                # Clean and combine price
-                return float(f"{''.join(filter(str.isdigit, price_whole))}.{''.join(filter(str.isdigit, price_fraction))}")
+            # Extract price component
+            price_element = soup.find('div', class_='Nx9bqj CxhGGd')
+            if price_element:
+                price_text = price_element.text.strip()
+                # Clean and extract price
+                price = ''.join(filter(str.isdigit, price_text))
+                return float(price)
             else:
-                logging.error("Price elements not found on the page.")
+                logging.error("Price element not found on the page.")
                 return None
         except Exception as e:
             logging.error(f"Error while scraping price: {e}")
