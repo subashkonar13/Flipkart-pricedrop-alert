@@ -45,16 +45,12 @@ class PriceTracker:
                 last_logged_price = self.logger.get_last_logged_price()
 
                 # Log the price if it’s not the same as the last logged price
-                if last_logged_price != current_price:
+                if last_logged_price > current_price:
                     self.logger.log_price(current_price)
-                    Logger.log_info(f"Logged new price: ${current_price}")
-
-                # Check if the current price matches the last logged price to trigger email notification
-                if last_logged_price == current_price:
                     self.notifier.send_price_alert(current_price, self.scraper.product_url)
                     Logger.log_info(f"Sent price drop alert for matching price: ${current_price}")
                 else:
-                    Logger.log_warning("No email sent as current price does not match the last logged price.")
+                    Logger.log_warning("No email sent as current price is not favoured")
             else:
                 Logger.log_warning("Failed to retrieve the current price.")
         except Exception as e:
