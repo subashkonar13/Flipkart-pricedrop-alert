@@ -79,3 +79,6 @@ if __name__ == "__main__":
     price_tracker = PriceTracker(scraper, logger, notifier)
     # Track and log price
     price_tracker.track_price()
+
+    # Schedule the task to run every 1 hour
+    Scheduler.schedule_task(tracker.track_price, interval_hours=1)
