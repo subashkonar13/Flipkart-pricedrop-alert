@@ -1,6 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
-import logging
+from logger import Logger
 
 class EmailNotifier:
     """
@@ -30,7 +30,8 @@ class EmailNotifier:
         self.email_password = email_password
         self.smtp_server = smtp_server
         self.smtp_port = smtp_port
-
+        
+    @Logger.log_execution 
     def send_price_alert(self, new_price: float, product_url: str) -> None:
         """
         Sends an email notification if the product price drops.
@@ -48,9 +49,10 @@ class EmailNotifier:
 
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                server.ehlo()
                 server.starttls()
                 server.login(self.sender_email, self.email_password)
                 server.sendmail(self.sender_email, self.receiver_email, msg.as_string())
-            logging.info(f"Price drop email sent! New price: ${new_price}")
+            Logger.log_info(f"Price drop email sent! New price: ${new_price}")
         except Exception as e:
-            logging.error(f"Error sending email: {e}")
+            Logger.log_error(f"Error sending email: {e}")
