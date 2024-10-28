@@ -39,7 +39,7 @@ class PriceTracker:
         try:
             current_price = self.scraper.fetch_current_price()
             if current_price is not None:
-                Logger.log_info(f"Fetched current price: ${current_price}")
+                Logger.log_info(f"Fetched current price: {current_price}")
 
                 # Retrieve the last logged price
                 last_logged_price = self.logger.get_last_logged_price()
@@ -48,7 +48,7 @@ class PriceTracker:
                 if last_logged_price > current_price:
                     self.logger.log_price(current_price)
                     self.notifier.send_price_alert(current_price, self.scraper.product_url)
-                    Logger.log_info(f"Sent price drop alert for matching price: ${current_price}")
+                    Logger.log_info(f"Sent price drop alert for matching price: {current_price}")
                 else:
                     Logger.log_warning("No email sent as current price is not favoured")
             else:
