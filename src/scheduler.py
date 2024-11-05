@@ -20,7 +20,7 @@ class Scheduler:
             interval_hours (int): The interval in hours at which the task should run (default is 1 hour).
         """
         schedule.every(interval_hours).hours.do(task)
-        logging.info(f"Scheduled task every {interval_hours} hours.")
+        Logger.log_info(f"Scheduled task every {interval_hours} hours.")
         while True:
             schedule.run_pending()
             time.sleep(1)
