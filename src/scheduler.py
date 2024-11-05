@@ -10,7 +10,7 @@ class Scheduler:
         schedule_task(task, interval_hours): Schedules the given task to run every specified hours.
     """
 
-    @staticmethod
+    @Logger.log_execution
     def schedule_task(task, interval_hours: int = 1):
         """
         Schedules the given task to run at a specified interval (in hours).
