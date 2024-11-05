@@ -1,6 +1,6 @@
 import schedule
 import time
-import logging
+from logger import Logger
 
 class Scheduler:
     """
